@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitnessApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241013162109_AddedPasswordField")]
-    partial class AddedPasswordField
+    [Migration("20241014170433_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,7 +75,12 @@ namespace FitnessApp.Migrations
                     b.Property<int>("Weight")
                         .HasColumnType("int");
 
+                    b.Property<int?>("WorkoutId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkoutId");
 
                     b.ToTable("Users");
                 });
@@ -99,12 +104,7 @@ namespace FitnessApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Workouts");
                 });
@@ -116,18 +116,18 @@ namespace FitnessApp.Migrations
                         .HasForeignKey("UserId");
                 });
 
-            modelBuilder.Entity("FitnessApp.Models.Workout", b =>
+            modelBuilder.Entity("FitnessApp.Models.User", b =>
                 {
-                    b.HasOne("FitnessApp.Models.User", null)
-                        .WithMany("Workouts")
-                        .HasForeignKey("UserId");
+                    b.HasOne("FitnessApp.Models.Workout", "Workout")
+                        .WithMany()
+                        .HasForeignKey("WorkoutId");
+
+                    b.Navigation("Workout");
                 });
 
             modelBuilder.Entity("FitnessApp.Models.User", b =>
                 {
                     b.Navigation("Goals");
-
-                    b.Navigation("Workouts");
                 });
 #pragma warning restore 612, 618
         }
