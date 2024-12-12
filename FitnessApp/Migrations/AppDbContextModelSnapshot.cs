@@ -23,24 +23,29 @@ namespace FitnessApp.Migrations
 
             modelBuilder.Entity("FitnessApp.Models.Goal", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("GoalId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GoalId"));
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Target")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ParentGoalId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("GoalId");
+
+                    b.HasIndex("ParentGoalId");
 
                     b.HasIndex("UserId");
 
@@ -84,30 +89,56 @@ namespace FitnessApp.Migrations
 
             modelBuilder.Entity("FitnessApp.Models.Workout", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("WorkoutId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WorkoutId"));
 
-                    b.Property<int>("Calories")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Duration")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("WorkoutType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("WorkoutId");
 
                     b.ToTable("Workouts");
                 });
 
+            modelBuilder.Entity("GoalWorkout", b =>
+                {
+                    b.Property<int>("GoalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkoutId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Repetitions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Sets")
+                        .HasColumnType("int");
+
+                    b.HasKey("GoalId", "WorkoutId");
+
+                    b.HasIndex("WorkoutId");
+
+                    b.ToTable("GoalWorkouts");
+                });
+
             modelBuilder.Entity("FitnessApp.Models.Goal", b =>
                 {
+                    b.HasOne("FitnessApp.Models.Goal", null)
+                        .WithMany("SubGoals")
+                        .HasForeignKey("ParentGoalId");
+
                     b.HasOne("FitnessApp.Models.User", null)
                         .WithMany("Goals")
                         .HasForeignKey("UserId");
@@ -122,7 +153,38 @@ namespace FitnessApp.Migrations
                     b.Navigation("Workout");
                 });
 
+            modelBuilder.Entity("GoalWorkout", b =>
+                {
+                    b.HasOne("FitnessApp.Models.Goal", "Goal")
+                        .WithMany("Workouts")
+                        .HasForeignKey("GoalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FitnessApp.Models.Workout", "Workout")
+                        .WithMany("Goals")
+                        .HasForeignKey("WorkoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Goal");
+
+                    b.Navigation("Workout");
+                });
+
+            modelBuilder.Entity("FitnessApp.Models.Goal", b =>
+                {
+                    b.Navigation("SubGoals");
+
+                    b.Navigation("Workouts");
+                });
+
             modelBuilder.Entity("FitnessApp.Models.User", b =>
+                {
+                    b.Navigation("Goals");
+                });
+
+            modelBuilder.Entity("FitnessApp.Models.Workout", b =>
                 {
                     b.Navigation("Goals");
                 });

@@ -1,0 +1,44 @@
+﻿@model FitnessApp.Models.Goal
+
+@{
+    ViewBag.Title = "Goal Details";
+}
+
+<h2>Goal Details</h2>
+
+<div class="card">
+    <div class="card-header">
+        <h3>@Model.Name</h3>
+    </div>
+    <div class="card-body">
+        <h4>Associated Workouts</h4>
+        @if (Model.Workouts != null && Model.Workouts.Any())
+        {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Workout Name</th>
+                            <th>Repetitions</th>
+                            <th>Sets</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var workout in Model.Workouts)
+                    {
+                                <tr>
+                                    <td>@workout.Workout.Name</td>
+                                    <td>@workout.Repetitions</td>
+                                    <td>@workout.Sets</td>
+                                </tr>
+                    }
+                    </tbody>
+                </table>
+        }
+        else
+        {
+                <p>No workouts are associated with this goal.</p>
+        }
+    </div>
+</div>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Goals</a>

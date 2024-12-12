@@ -13,21 +13,23 @@ namespace FitnessApp.Controllers
         public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
-            _context= context;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-           if(HttpContext.Session.GetString("Username")!=null)
+            if (HttpContext.Session.GetString("Username") != null)
             {
-                user = _context.Users.Include(x => x.Goals).Include(x=>x.Workout).FirstOrDefault(x => x.Name == (HttpContext.Session.GetString("Username"))); ;
- 
-               
-                    return View("Index",user);
-                
+                user = _context.Users.Include(x => x.Goals).Include(x => x.Workout).FirstOrDefault(x => x.Name == (HttpContext.Session.GetString("Username"))); ;
+
+
+                var goals = _context.Goals.ToList();
+                return View(goals);
             }
-          
-           else
+
+
+
+            else
                 return View("../Auth/Login");
         }
 
@@ -43,53 +45,145 @@ namespace FitnessApp.Controllers
         }
         public IActionResult AddGoal()
         {
-          
+
             return View();  // Pass userId to the view to associate with the goal
-           
+
         }
-        [HttpPost]
-        public IActionResult AddGoal(Goal goal)
+       
+        public ActionResult Details(int id)
         {
-            if (ModelState.IsValid)
-            {
-
-               user= _context.Users.FirstOrDefault(x => x.Name == (HttpContext.Session.GetString("Username")));
-                if(user!=null)
-                {
-                    if(user.Goals==null)
-                    {
-                        user.Goals = new List<Goal>();
-
-                    }
-                    user.Goals.Add(goal);
-                }
-              
-                _context.SaveChanges();  // Save to the database
-                return RedirectToAction("Index");
-            }
+            var goal = _context.Goals.Include("Workouts.Workout").FirstOrDefault(g => g.GoalId == id);
+            if (goal == null)
+                return HttpNotFound();
             return View(goal);
         }
+
+        // GET: Goals/Create
+        public ActionResult Create()
+        {
+            ViewBag.Workouts = _context.Workouts.ToList();
+            return View();
+        }
+
+        // POST: Goals/Create
         [HttpPost]
-        public IActionResult EditWorkout(Workout workoutPlan)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Goal goal, int[] workoutIds, int[] repetitions, int[] sets)
         {
             if (ModelState.IsValid)
             {
-                user = _context.Users.FirstOrDefault(x => x.Name == (HttpContext.Session.GetString("Username")));
-                if (user != null)
+                if (workoutIds != null)
                 {
-
-                    user.Workout = workoutPlan;
+                    for (int i = 0; i < workoutIds.Length; i++)
+                    {
+                        goal.Workouts.Add(new GoalWorkout
+                        {
+                            WorkoutId = workoutIds[i],
+                            Repetitions = repetitions[i],
+                            Sets = sets[i]
+                        });
+                    }
                 }
-               
-                _context.SaveChanges();  // Update the workout plan in the database
+                _context.Goals.Add(goal);
+                _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(workoutPlan);
+            ViewBag.Workouts = _context.Workouts.ToList();
+            return View(goal);
         }
-        public IActionResult EditWorkout()
+
+
+        public ActionResult Edit(int id)
         {
-            // Logic to edit workout
-            return View();
+            var goal = _context.Goals
+                .Include("Workouts.Workout") // Include associated workouts
+                .FirstOrDefault(g => g.GoalId == id);
+
+            if (goal == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Workouts = _context.Workouts.ToList(); // Populate the available workouts
+            return View(goal);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Goal goal, int[] workoutIds, int[] repetitions, int[] sets)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingGoal = _context.Goals
+                    .Include(g => g.Workouts)
+                    .FirstOrDefault(g => g.GoalId == goal.GoalId);
+
+                if (existingGoal == null)
+                {
+                    return HttpNotFound();
+                }
+
+                // Update goal properties
+                existingGoal.Name = goal.Name;
+
+                // Clear existing workouts and re-add them
+                existingGoal.Workouts.Clear();
+                if (workoutIds != null)
+                {
+                    for (int i = 0; i < workoutIds.Length; i++)
+                    {
+                        existingGoal.Workouts.Add(new GoalWorkout
+                        {
+                            WorkoutId = workoutIds[i],
+                            Repetitions = repetitions[i],
+                            Sets = sets[i]
+                        });
+                    }
+                }
+
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Workouts = _context.Workouts.ToList();
+            return View(goal);
+        }
+        public ActionResult Delete(int id)
+        {
+            var goal = _context.Goals.Find(id);
+            if (goal == null)
+                return HttpNotFound();
+            return View(goal);
+        }
+
+        private ActionResult HttpNotFound()
+        {
+            return null;
+        }
+
+        // POST: Goals/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var goal = _context.Goals.Find(id);
+            if (goal == null)
+                return HttpNotFound();
+
+            _context.Goals.Remove(goal);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+
     }
 }

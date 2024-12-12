@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\fitness tracker app\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj": {}
+    "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj": {}
   },
   "projects": {
-    "D:\\fitness tracker app\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj": {
+    "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\fitness tracker app\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj",
+        "projectUniqueName": "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj",
         "projectName": "FitnessApp",
-        "projectPath": "D:\\fitness tracker app\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj",
-        "packagesPath": "C:\\Users\\ASUS1\\.nuget\\packages\\",
-        "outputPath": "D:\\fitness tracker app\\FitnessTrackerApp\\FitnessApp\\obj\\",
+        "projectPath": "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\FitnessApp.csproj",
+        "packagesPath": "C:\\Users\\MUME\\.nuget\\packages\\",
+        "outputPath": "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ASUS1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MUME\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\Public\\Documents\\Infragistics\\NuGet\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,8 +43,9 @@
         "restoreAuditProperties": {
           "enableAudit": "true",
           "auditLevel": "low",
-          "auditMode": "direct"
-        }
+          "auditMode": "all"
+        },
+        "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
         "net7.0": {
@@ -97,7 +103,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files (x86)\\dotnet\\sdk\\8.0.302\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }

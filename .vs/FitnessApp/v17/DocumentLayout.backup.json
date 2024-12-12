@@ -108,7 +108,7 @@
               "RelativeDocumentMoniker": "FitnessApp\\Views\\Home\\Edit.cshtml",
               "ToolTip": "C:\\mohit\\FitnessApp\\FitnessTrackerApp\\FitnessApp\\Views\\Home\\Edit.cshtml",
               "RelativeToolTip": "FitnessApp\\Views\\Home\\Edit.cshtml",
-              "ViewState": "AgIAABkAAAAAAAAAAAAAwCQAAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAAwDgAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
               "WhenOpened": "2024-12-12T12:11:49.702Z",
               "EditorCaption": ""
@@ -123,8 +123,7 @@
               "RelativeToolTip": "FitnessApp\\Controllers\\HomeController.cs",
               "ViewState": "AgIAAF0AAAAAAAAAAAAAAG0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T16:31:18.579Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T16:31:18.579Z"
             },
             {
               "$type": "Document",
@@ -208,8 +207,7 @@
               "RelativeToolTip": "FitnessApp\\Controllers\\AuthController.cs",
               "ViewState": "AgIAACwAAAAAMzMzMxMwwD0AAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-10-14T16:31:18.618Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-10-14T16:31:18.618Z"
             },
             {
               "$type": "Document",

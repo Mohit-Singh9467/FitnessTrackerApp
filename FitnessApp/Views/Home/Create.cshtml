@@ -1,0 +1,100 @@
+@model FitnessApp.Models.Goal
+
+@{
+    ViewBag.Title = "Create Goal";
+}
+
+<h2>Create Goal</h2>
+
+@using (Html.BeginForm("Create", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+        <div class="form-group">
+        @Html.LabelFor(model => model.Name, "Goal Name")
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+
+             <div class="form-group">
+        @Html.LabelFor(model => model.Description, "Goal Description")
+        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+
+        <div id="workouts-section">
+            <h4>Associate Workouts</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Workout</th>
+                        <th>Repetitions</th>
+                        <th>Sets</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="workouts-table">
+                    <tr>
+                        <td>
+                            <select name="workoutIds" class="form-control">
+                                <option value="">-- Select Workout --</option>
+                            @foreach (var workout in ViewBag.Workouts as List<FitnessApp.Models.Workout>)
+                            {
+                                        <option value="@workout.WorkoutId">@workout.Name</option>
+                            }
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="repetitions" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="number" name="sets" class="form-control" />
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-danger remove-workout">Remove</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="button" id="add-workout" class="btn btn-primary">Add Workout</button>
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Goal</button>
+}
+
+@section Scripts {
+        <script>
+            $(document).ready(function () {
+                // Add new workout row
+                $('#add-workout').click(function () {
+                    let workoutRow = `
+                        <tr>
+                            <td>
+                                <select name="workoutIds" class="form-control">
+                                    <option value="">-- Select Workout --</option>
+        @foreach (var workout in ViewBag.Workouts as List<FitnessApp.Models.Workout>)
+        {
+                                            <option value="@workout.WorkoutId">@workout.Name</option>
+        }
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" name="repetitions" class="form-control" />
+                            </td>
+                            <td>
+                                <input type="number" name="sets" class="form-control" />
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger remove-workout">Remove</button>
+                            </td>
+                        </tr>`;
+                    $('#workouts-table').append(workoutRow);
+                });
+
+                // Remove workout row
+                $(document).on('click', '.remove-workout', function () {
+                    $(this).closest('tr').remove();
+                });
+            });
+        </script>
+}
